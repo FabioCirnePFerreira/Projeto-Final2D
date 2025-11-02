@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Player : MonoBehaviour
 {
@@ -7,12 +8,16 @@ public class Player : MonoBehaviour
     public Vector2 posicaoInicial;
     public GameManager gameManager;
 
-    public Animator anim;
+    private Animator anim;
     private Rigidbody2D rigd;
     public float speed;
 
     public float jumpForce = 5f;
-    public bool isground;
+    private bool isground;
+
+    [SerializeField] private GameObject groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckDistance;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,7 +26,7 @@ public class Player : MonoBehaviour
         rigd = GetComponent<Rigidbody2D>();
         posicaoInicial = transform.position;  //pega posição inicial
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -39,37 +44,42 @@ public class Player : MonoBehaviour
         float teclas = Input.GetAxis("Horizontal");
         rigd.linearVelocity = new Vector2(teclas * speed, rigd.linearVelocity.y);
 
-        if (teclas > 0 && isground == true)
+        if (teclas > 0)
         {
             transform.eulerAngles = new Vector2(0, 0);
-            anim.SetInteger("transition", 1);
+            if (isground) anim.SetInteger("transition", 1);
         }
-        if (teclas < 0 && isground == true)
+        if (teclas < 0)
         {
             transform.eulerAngles = new Vector2(0, 180);
-            anim.SetInteger("transition", 1);
+            if (isground) anim.SetInteger("transition", 1);
         }
-        if(teclas == 0)
+        if (teclas == 0 && isground)
         {
             anim.SetInteger("transition", 0);
         }
     }
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isground == true)
+
+        isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        Debug.Log(isground);
+        Debug.DrawLine(groundCheck.transform.position, groundCheck.transform.position + Vector3.down * groundCheckDistance);
+
+        Vector2 v = rigd.linearVelocity;
+        if (Input.GetKeyDown(KeyCode.Space) && isground)
         {
             rigd.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            anim.SetInteger("transition", 2);
-            isground = false;
         }
+
+        anim.SetFloat("velocitY", v.y);
+
+        if (!isground) anim.SetInteger("transition", 2);
+
+
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "tagGround")
-        {
-            isground = true;
-            Debug.Log("esta no chão");
-        }
         if (collision.gameObject.tag == "Morreu")
         {
             Debug.Log("Morreu");
