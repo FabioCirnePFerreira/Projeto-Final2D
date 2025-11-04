@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     {
 
         isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
-        Debug.Log(isground);
+        //Debug.Log(isground);
         Debug.DrawLine(groundCheck.transform.position, groundCheck.transform.position + Vector3.down * groundCheckDistance);
 
         Vector2 v = rigd.linearVelocity;

@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public int pontos = 0;
     public int vidas = 5;
 
+    public TextMeshProUGUI textVidas;
     public TextMeshProUGUI textPontos;
 
 
@@ -27,7 +28,8 @@ public class GameManager : MonoBehaviour
     {
         vidas -= vida;
         Debug.Log("Vidas: " + vidas);
-        GameObject player = GameObject.FindWithTag("Player");
+        GameObject player = GameObject.FindWithTag("Morreu");
+        textVidas.text = "Vidas: " + vidas;
         player.GetComponent<Player>().ReiniciarPosicao();
 
         if (vidas <= 0)
@@ -36,4 +38,5 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Over.");
         }
     }
+    
 }
