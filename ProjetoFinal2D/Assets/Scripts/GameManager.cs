@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
         vidas -= vida;
         Debug.Log("Vidas: " + vidas);
-        GameObject player = GameObject.FindWithTag("Morreu");
+        GameObject player = GameObject.FindWithTag("Player");
         textVidas.text = "Vidas: " + vidas;
         player.GetComponent<Player>().ReiniciarPosicao();
 
@@ -38,5 +38,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("Game Over.");
         }
     }
-    
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Morreu")
+        {
+            Debug.Log("Morreu");
+            GameObject player = GameObject.FindWithTag("Player");
+            player.GetComponent<Player>().ReiniciarPosicao();
+        }
+    }
+
 }
