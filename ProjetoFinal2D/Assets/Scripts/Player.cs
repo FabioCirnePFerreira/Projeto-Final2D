@@ -82,14 +82,8 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "Morreu")
         {
-            Debug.Log("Morreu");
             GameObject player = GameObject.FindWithTag("Player");
             player.GetComponent<Player>().ReiniciarPosicao();
-        }
-        if (collision.gameObject.CompareTag("Morreu"))
-        {
-            Debug.Log("Morreu");
-
             gameManager.PerderVidas(1);
         }
     }
