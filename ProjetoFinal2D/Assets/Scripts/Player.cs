@@ -8,10 +8,13 @@ public class Player : MonoBehaviour
     public Vector2 posicaoInicial;
     public GameManager gameManager;
 
+    [Header("Move System")]
     private Animator anim;
     private Rigidbody2D rigd;
     public float speed;
+    private float currentSpeed;
 
+    [Header("Jump System")]
     public float jumpForce = 5f;
     private bool isground;
 
@@ -19,9 +22,16 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance;
 
+    [Header("Push System")]
+    [SerializeField] private Transform pushCheck;
+    [SerializeField] private LayerMask pushLayer;
+    [SerializeField] private float pushDistance;
+    [SerializeField] private float pushVelocity;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        currentSpeed = speed;
         anim = GetComponent<Animator>();
         rigd = GetComponent<Rigidbody2D>();
         posicaoInicial = transform.position;  //pega posição inicial
@@ -32,6 +42,7 @@ public class Player : MonoBehaviour
     {
         Move();
         Jump();
+        Push();
     }
 
     public void ReiniciarPosicao()
@@ -42,7 +53,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         float teclas = Input.GetAxis("Horizontal");
-        rigd.linearVelocity = new Vector2(teclas * speed, rigd.linearVelocity.y);
+        rigd.linearVelocity = new Vector2(teclas * currentSpeed, rigd.linearVelocity.y);
 
         if (teclas > 0)
         {
@@ -78,6 +89,33 @@ public class Player : MonoBehaviour
 
 
     }
+
+    Rigidbody2D pushRB = null;
+    BoxCollider2D pushCollider = null;
+    void Push() 
+    {
+        RaycastHit2D ispushing = Physics2D.Raycast(pushCheck.position, transform.right, pushDistance, pushLayer);
+        
+        if (ispushing )
+        {
+            pushRB = ispushing.rigidbody;
+            pushCollider = pushRB.GetComponent<BoxCollider2D>();
+            if (pushRB.linearVelocity.y == 0 && !pushCollider.isTrigger )
+            {
+                pushRB.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+                pushRB.linearVelocity = new Vector2(rigd.linearVelocity.x, pushRB.linearVelocityY);
+                currentSpeed = speed * pushVelocity;
+            }
+        }
+        if (pushRB  != null && !ispushing) 
+        {
+            pushRB.constraints |= RigidbodyConstraints2D.FreezePositionX;
+            pushRB.linearVelocity = Vector2.zero;
+            pushRB = null;
+            currentSpeed = speed;
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Morreu")

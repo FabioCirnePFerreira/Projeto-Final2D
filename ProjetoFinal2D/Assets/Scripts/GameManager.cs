@@ -3,12 +3,19 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     public int pontos = 0;
     public int vidas = 5;
+    public int pressedButtonsCount;
+    [SerializeField] private Botao[] buttons;
 
     public TextMeshProUGUI textVidas;
     public TextMeshProUGUI textPontos;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void Addpontos(int qtd)     //Pontos
     {
@@ -49,4 +56,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void VictoryCondition()
+    {
+        int x = 0;
+        foreach (Botao btn in buttons) 
+        {
+            if (btn.isPressed)
+            {
+                x += 1;
+                //Debug.Log("Pressionou");
+                //Debug.Log(buttons.Length);
+            }
+        }
+        if (x >= buttons.Length) 
+        {
+            Debug.Log("Ganhou");
+        }
+    } 
 }
