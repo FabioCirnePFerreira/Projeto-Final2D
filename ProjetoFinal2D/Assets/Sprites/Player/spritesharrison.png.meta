@@ -1,0 +1,767 @@
+fileFormatVersion: 2
+guid: b9d4bbe0e443a3d4e85ea2be1bdd3aed
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1557320761209199718
+    second: spritesharrison_0
+  - first:
+      213: -7965591621414120988
+    second: spritesharrison_1
+  - first:
+      213: 5750386633481465818
+    second: spritesharrison_2
+  - first:
+      213: -6880096976367669679
+    second: spritesharrison_3
+  - first:
+      213: -7559359847019922378
+    second: spritesharrison_4
+  - first:
+      213: -4221548407699240471
+    second: spritesharrison_5
+  - first:
+      213: -814712069239579644
+    second: spritesharrison_6
+  - first:
+      213: -530576056982415112
+    second: spritesharrison_7
+  - first:
+      213: 2508428023253632330
+    second: spritesharrison_8
+  - first:
+      213: 5436921193646635540
+    second: spritesharrison_9
+  - first:
+      213: 1561087334029463267
+    second: spritesharrison_10
+  - first:
+      213: -955665893356378136
+    second: spritesharrison_11
+  - first:
+      213: 8882353551343807861
+    second: spritesharrison_12
+  - first:
+      213: 3069183791579323987
+    second: spritesharrison_13
+  - first:
+      213: 1923822918199483479
+    second: spritesharrison_14
+  - first:
+      213: 6372802566729160566
+    second: spritesharrison_15
+  - first:
+      213: -5965265762168114712
+    second: spritesharrison_16
+  - first:
+      213: 254314714113470328
+    second: spritesharrison_17
+  - first:
+      213: 4556276643125904590
+    second: spritesharrison_18
+  - first:
+      213: -9070775538219938603
+    second: spritesharrison_19
+  - first:
+      213: -1867562903453132814
+    second: spritesharrison_20
+  - first:
+      213: -9094403798360620962
+    second: spritesharrison_21
+  - first:
+      213: 3124942365119287071
+    second: spritesharrison_22
+  - first:
+      213: 7142474677203664846
+    second: spritesharrison_23
+  - first:
+      213: -5193925394745103068
+    second: spritesharrison_24
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: spritesharrison_0
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 235
+        width: 35
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a93e8cac409436ae0800000000000000
+      internalID: -1557320761209199718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 235
+        width: 41
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4e198c3bf98847190800000000000000
+      internalID: -7965591621414120988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_2
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 235
+        width: 27
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adf21d12d2a7dcf40800000000000000
+      internalID: 5750386633481465818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_3
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 235
+        width: 44
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15ead57904cf480a0800000000000000
+      internalID: -6880096976367669679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_4
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 236
+        width: 37
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6111111}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63cb6053542c71790800000000000000
+      internalID: -7559359847019922378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_5
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 236
+        width: 30
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6111111}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e988f4071c0a65c0800000000000000
+      internalID: -4221548407699240471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_6
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 236
+        width: 27
+        height: 58
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5689655}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40c50c680bf81b4f0800000000000000
+      internalID: -814712069239579644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_7
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 171
+        width: 20
+        height: 58
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5689655}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f85c3523e303a8f0800000000000000
+      internalID: -530576056982415112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_8
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 171
+        width: 27
+        height: 55
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a450ba63ff9bfc220800000000000000
+      internalID: 2508428023253632330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_9
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 171
+        width: 33
+        height: 47
+      alignment: 9
+      pivot: {x: 0.4848485, y: 0.70212764}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41ab9130503d37b40800000000000000
+      internalID: 5436921193646635540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_10
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 171
+        width: 26
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.57894737}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee0038c8a81aa510800000000000000
+      internalID: 1561087334029463267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_11
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 171
+        width: 37
+        height: 54
+      alignment: 9
+      pivot: {x: 0.5, y: 0.6111111}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e7698eeeeaccb2f0800000000000000
+      internalID: -955665893356378136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_12
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 171
+        width: 30
+        height: 56
+      alignment: 9
+      pivot: {x: 0.5, y: 0.58928573}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57de6458e75744b70800000000000000
+      internalID: 8882353551343807861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_13
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 171
+        width: 22
+        height: 57
+      alignment: 9
+      pivot: {x: 0.5, y: 0.57894737}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35ed87fa56ee79a20800000000000000
+      internalID: 3069183791579323987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_14
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 171
+        width: 26
+        height: 56
+      alignment: 9
+      pivot: {x: 0.5, y: 0.58928573}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75c190250cac2ba10800000000000000
+      internalID: 1923822918199483479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_15
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 141
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 677d69d7b2eb07850800000000000000
+      internalID: 6372802566729160566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_16
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 141
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e17b27056e173da0800000000000000
+      internalID: -5965265762168114712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_17
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 142
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87f63e392e1878300800000000000000
+      internalID: 254314714113470328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_18
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 140
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec4cdeb77752b3f30800000000000000
+      internalID: 4556276643125904590
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_19
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 140
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5dc091ff4b12e1280800000000000000
+      internalID: -9070775538219938603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_20
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 140
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f79aff1f651516e0800000000000000
+      internalID: -1867562903453132814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_21
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 102
+        width: 27
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5080cafdef2ac180800000000000000
+      internalID: -9094403798360620962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_22
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 102
+        width: 30
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1f018046860e5b20800000000000000
+      internalID: 3124942365119287071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_23
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 102
+        width: 56
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecf72ff50ea2f1360800000000000000
+      internalID: 7142474677203664846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spritesharrison_24
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 103
+        width: 79
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42d66504f587be7b0800000000000000
+      internalID: -5193925394745103068
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: d78a081e05795a04cbce6a7eca5cf0c0
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      spritesharrison_0: -1557320761209199718
+      spritesharrison_1: -7965591621414120988
+      spritesharrison_10: 1561087334029463267
+      spritesharrison_11: -955665893356378136
+      spritesharrison_12: 8882353551343807861
+      spritesharrison_13: 3069183791579323987
+      spritesharrison_14: 1923822918199483479
+      spritesharrison_15: 6372802566729160566
+      spritesharrison_16: -5965265762168114712
+      spritesharrison_17: 254314714113470328
+      spritesharrison_18: 4556276643125904590
+      spritesharrison_19: -9070775538219938603
+      spritesharrison_2: 5750386633481465818
+      spritesharrison_20: -1867562903453132814
+      spritesharrison_21: -9094403798360620962
+      spritesharrison_22: 3124942365119287071
+      spritesharrison_23: 7142474677203664846
+      spritesharrison_24: -5193925394745103068
+      spritesharrison_3: -6880096976367669679
+      spritesharrison_4: -7559359847019922378
+      spritesharrison_5: -4221548407699240471
+      spritesharrison_6: -814712069239579644
+      spritesharrison_7: -530576056982415112
+      spritesharrison_8: 2508428023253632330
+      spritesharrison_9: 5436921193646635540
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
