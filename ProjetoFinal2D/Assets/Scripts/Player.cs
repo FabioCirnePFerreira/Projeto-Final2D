@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance;
+    [SerializeField] private float gravityDegrees;
+    private float gravity;
 
     [Header("Push System")]
     [SerializeField] private Transform pushCheck;
@@ -34,6 +36,7 @@ public class Player : MonoBehaviour
         currentSpeed = speed;
         anim = GetComponent<Animator>();
         rigd = GetComponent<Rigidbody2D>();
+        gravity = rigd.gravityScale;
         posicaoInicial = transform.position;  //pega posição inicial
     }
 
@@ -85,13 +88,28 @@ public class Player : MonoBehaviour
 
         anim.SetFloat("velocitY", v.y);
 
-        if (!isground) anim.SetInteger("transition", 2);
+        if (!isground)
+        {
+            anim.SetInteger("transition", 2);
+
+            // sistema de pulo variavel
+            if (Input.GetKey(KeyCode.Space) && rigd.linearVelocity.y > 0)
+            {
+                rigd.gravityScale = gravity * gravityDegrees;
+            }
+            else
+            {
+                rigd.gravityScale = gravity * (1 + gravityDegrees);
+            }
+        }
+        else rigd.gravityScale = gravity;
 
 
     }
 
     Rigidbody2D pushRB = null;
     BoxCollider2D pushCollider = null;
+
     void Push() 
     {
         RaycastHit2D ispushing = Physics2D.Raycast(pushCheck.position, transform.right, pushDistance, pushLayer);
