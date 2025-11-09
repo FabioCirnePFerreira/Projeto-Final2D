@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     public void VictoryCondition()
     {
         int x = 0;
-        foreach (Botao btn in buttons) 
+        foreach (Botao btn in buttons)
         {
             if (btn.isPressed)
             {
@@ -68,9 +68,9 @@ public class GameManager : MonoBehaviour
                 //Debug.Log(buttons.Length);
             }
         }
-        if (x >= buttons.Length) 
+        if (x >= buttons.Length)
         {
             Debug.Log("Ganhou");
         }
-    } 
+    }
 }
