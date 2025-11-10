@@ -72,11 +72,13 @@ public class Player : MonoBehaviour
         Attack();
     }
 
+    //====================================REINICIA POSIÇÃO==========================================
     public void ReiniciarPosicao()
     {
         transform.position = posicaoInicial;
     }
 
+    //===================================SISTEMA DE MOVIMENTO=======================================
     void Move()
     {
         float teclas = Input.GetAxis("Horizontal");
@@ -97,6 +99,8 @@ public class Player : MonoBehaviour
             if(pushRB == null) anim.SetInteger("transition", 0);
         }
     }
+
+    //=======================================SISTEMA DE PULO=======================================
     void Jump()
     {
 
@@ -134,6 +138,7 @@ public class Player : MonoBehaviour
     Rigidbody2D pushRB = null;
     BoxCollider2D pushCollider = null;
 
+    //===================================SISTEMA DE EMPURRAR================================
     void Push() 
     {
         RaycastHit2D ispushing = Physics2D.Raycast(pushCheck.position, transform.right, pushDistance, pushLayer);
@@ -162,7 +167,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // sistema do papagaio
+    // =========================SISTEMA DO PAPAGUAIO==============================
     void FollowParrot()
     {
         parrotTransform.position = Vector2.MoveTowards(parrotTransform.position, parrotTransformTarget.position, currentParrotSpeed*Time.deltaTime);
@@ -177,6 +182,7 @@ public class Player : MonoBehaviour
 
     }
 
+    //=========================SISTEMA DE ATTAQUE==============================
     void Attack()
     {
         Collider2D hit = Physics2D.OverlapBox(attackOrigin.position + transform.right*(radiusAttack/2), new Vector2(radiusAttack, radiusAttack/2), 0, enemieLayer);
@@ -187,6 +193,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    //====================SISTEMA DE TRIGGER PARA A MORTE======================
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Morreu")
