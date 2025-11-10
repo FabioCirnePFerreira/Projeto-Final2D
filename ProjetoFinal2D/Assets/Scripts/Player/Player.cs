@@ -42,6 +42,11 @@ public class Player : MonoBehaviour
     private Transform parrotTransformTarget;
     private Animator parrotAnim;
 
+    [Header("Attack System")]
+    [SerializeField] private float radiusAttack;
+    [SerializeField] private Transform attackOrigin;
+    [SerializeField] private LayerMask enemieLayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,6 +69,7 @@ public class Player : MonoBehaviour
         Jump();
         Push();
         FollowParrot();
+        Attack();
     }
 
     public void ReiniciarPosicao()
@@ -79,16 +85,16 @@ public class Player : MonoBehaviour
         if (teclas > 0)
         {
             transform.eulerAngles = new Vector2(0, 0);
-            if (isground) anim.SetInteger("transition", 1);
+            if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas < 0)
         {
             transform.eulerAngles = new Vector2(0, 180);
-            if (isground) anim.SetInteger("transition", 1);
+            if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas == 0 && isground)
         {
-            anim.SetInteger("transition", 0);
+            if(pushRB == null) anim.SetInteger("transition", 0);
         }
     }
     void Jump()
@@ -108,7 +114,7 @@ public class Player : MonoBehaviour
 
         if (!isground)
         {
-            anim.SetInteger("transition", 2);
+            if(pushRB == null) anim.SetInteger("transition", 2);
 
             // sistema de pulo variavel
             if (Input.GetKey(KeyCode.Space) && rigd.linearVelocity.y > 0)
@@ -131,7 +137,7 @@ public class Player : MonoBehaviour
     void Push() 
     {
         RaycastHit2D ispushing = Physics2D.Raycast(pushCheck.position, transform.right, pushDistance, pushLayer);
-        
+
         if (ispushing )
         {
             pushRB = ispushing.rigidbody;
@@ -142,6 +148,7 @@ public class Player : MonoBehaviour
                 pushRB.linearVelocity = new Vector2(rigd.linearVelocity.x, pushRB.linearVelocityY);
                 currentSpeed = speed * pushVelocity;
                 parrotTransformTarget = pushRB.transform;
+                anim.SetInteger("transition", 4);
             }
         }
         if (pushRB  != null && !ispushing) 
@@ -151,6 +158,7 @@ public class Player : MonoBehaviour
             pushRB = null;
             currentSpeed = speed;
             parrotTransformTarget = parrotTarget;
+            anim.SetInteger("transition", 0);
         }
     }
 
@@ -167,6 +175,16 @@ public class Player : MonoBehaviour
 
         parrotAnim.SetBool("Fly", !(distance < parrotMinDistance));
 
+    }
+
+    void Attack()
+    {
+        Collider2D hit = Physics2D.OverlapBox(attackOrigin.position + transform.right*(radiusAttack/2), new Vector2(radiusAttack, radiusAttack/2), 0, enemieLayer);
+
+        if (Input.GetKeyDown(KeyCode.C) && hit)
+        {
+            Destroy(hit.gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

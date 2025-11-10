@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2170059617886086873}
   - component: {fileID: 4382764464305795985}
   - component: {fileID: 2312524987537460797}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: snake
   m_TagString: Morreu
   m_Icon: {fileID: 0}
