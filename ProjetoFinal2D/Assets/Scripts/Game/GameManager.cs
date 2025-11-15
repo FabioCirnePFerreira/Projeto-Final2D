@@ -1,20 +1,25 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public int pontos = 0;
-    public int vidas = 5;
-    public int pressedButtonsCount;
+    [HideInInspector] public bool deth;
+    private bool hit;
+    [HideInInspector] public int pressedButtonsCount;
     [SerializeField] private Botao[] buttons;
+    [SerializeField] private Animator hudAnim;
 
-    public TextMeshProUGUI textVidas;
-    public TextMeshProUGUI textPontos;
+    [SerializeField] bool imortal;
 
+    [SerializeField] private Animator transition;
     private void Awake()
     {
         instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Addpontos(int qtd)     //Pontos
@@ -25,25 +30,30 @@ public class GameManager : MonoBehaviour
         {
             pontos = 0;
         }
-
-        textPontos.text = "Pontos: " + pontos;
-
-        Debug.Log("Pontos: " + pontos);
     }
 
-    public void PerderVidas(int vida)
+    public void PerderVidas(bool instant)
     {
-        vidas -= vida;
-        Debug.Log("Vidas: " + vidas);
-        GameObject player = GameObject.FindWithTag("Player");
-        textVidas.text = "Vidas: " + vidas;
-        player.GetComponent<Player>().ReiniciarPosicao();
-
-        if (vidas <= 0)
+        if ((hit || instant) && !imortal)
         {
-            Time.timeScale = 0;
-            Debug.Log("Game Over.");
+            deth = true;
+            Transition("Menu");
         }
+
+        hit = true;
+        hudAnim.SetBool("hit", hit);
+    }
+
+    public void Transition(string scene)
+    {
+        StartCoroutine(TransitionCoroutine(scene));
+    }
+    IEnumerator TransitionCoroutine(string scene)
+    {
+        transition.SetBool("go", true);
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene(scene);
+        yield return null;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
