@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -5,7 +7,7 @@ public class Player : MonoBehaviour
     //Pública: é acessivel no inspector;
     //Privada não é encontrada em nenhum outro lugar;
     public Vector2 posicaoInicial;
-    public GameManager gameManager;
+    private GameManager gameManager;
 
     [Header("Move System")]
     private Animator anim;
@@ -46,13 +48,26 @@ public class Player : MonoBehaviour
     [SerializeField] private float radiusAttack;
     [SerializeField] private Transform attackOrigin;
     [SerializeField] private LayerMask enemieLayer;
+    [SerializeField] private float attackDelay;
+    private bool attacking;
+
+    [Header("Damage System")]
+    [SerializeField] private LayerMask instantDethLayer;
+    [SerializeField] private float knockBack = 5;
+    [SerializeField] private float knockBackTime = 0.5f;
+    [SerializeField] private Color damageColorSprite;
+    [SerializeField] private Animator camAnim;
+    private SpriteRenderer spr;
+    private bool onKnockBack;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         anim = GetComponent<Animator>();
         rigd = GetComponent<Rigidbody2D>();
+        spr = GetComponent <SpriteRenderer>();
 
+        gameManager = GameManager.instance;
         currentSpeed = speed;
         gravity = rigd.gravityScale;
         posicaoInicial = transform.position;  //pega posição inicial
@@ -65,8 +80,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Jump();
+        if (!attacking)
+        {
+            Move();
+            Jump();
+        }
         Push();
         FollowParrot();
         Attack();
@@ -81,6 +99,8 @@ public class Player : MonoBehaviour
     //===================================SISTEMA DE MOVIMENTO=======================================
     void Move()
     {
+        if (onKnockBack) return;
+
         float teclas = Input.GetAxis("Horizontal");
         rigd.linearVelocity = new Vector2(teclas * currentSpeed, rigd.linearVelocity.y);
 
@@ -103,7 +123,6 @@ public class Player : MonoBehaviour
     //=======================================SISTEMA DE PULO=======================================
     void Jump()
     {
-
         isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
         //Debug.Log(isground);
         Debug.DrawLine(groundCheck.transform.position, groundCheck.transform.position + Vector3.down * groundCheckDistance);
@@ -163,7 +182,6 @@ public class Player : MonoBehaviour
             pushRB = null;
             currentSpeed = speed;
             parrotTransformTarget = parrotTarget;
-            anim.SetInteger("transition", 0);
         }
     }
 
@@ -179,28 +197,58 @@ public class Player : MonoBehaviour
         if(parrotTransform.position.x < parrotTransformTarget.position.x && distance > parrotMinDistance) parrotTransform.eulerAngles = Vector3.zero;
 
         parrotAnim.SetBool("Fly", !(distance < parrotMinDistance));
-
     }
 
-    //=========================SISTEMA DE ATTAQUE==============================
+    //=========================SISTEMA DE ATAQUE==============================
     void Attack()
     {
-        Collider2D hit = Physics2D.OverlapBox(attackOrigin.position + transform.right*(radiusAttack/2), new Vector2(radiusAttack, radiusAttack/2), 0, enemieLayer);
-
-        if (Input.GetKeyDown(KeyCode.C) && hit)
+        Collider2D hit = Physics2D.OverlapBox(attackOrigin.position + transform.right * (radiusAttack / 2), new Vector2(radiusAttack, radiusAttack / 2), 0, enemieLayer);
+        if (Input.GetKeyDown(KeyCode.C) && !attacking && isground)
         {
-            Destroy(hit.gameObject);
+            rigd.linearVelocity = Vector2.zero;
+            anim.SetInteger("transition", 3);
+            attacking = true;
+            StartCoroutine(AttackCoroutine(attackDelay, hit));
         }
+    }
+    IEnumerator AttackCoroutine(float duration,Collider2D obj)
+    {
+        yield return new WaitForSeconds(duration);
+        if(obj) Destroy(obj.gameObject);
+        attacking = false;
+    }
+
+    //=========================SISTEM DE KNOCKBACK=============================
+    void KnockBack(Transform knockBackOrigin)
+    {
+        Vector2 dir = (knockBackOrigin.position - transform.position).normalized;// CALCULA O VETOR DA DIREÇÃO ENTRE O PLAYER E A ORIGEM DO KNOCKBACK
+        rigd.linearVelocity = Vector2.zero;
+        rigd.linearVelocity = (-dir + Vector2.up/2) * knockBack;
+        onKnockBack = true;
+        spr.color = damageColorSprite;
+        camAnim.SetBool("shake", true);
+        StartCoroutine(KnockBackCoroutine(knockBackTime));
+    }
+    IEnumerator KnockBackCoroutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        onKnockBack = false;
+        camAnim.SetBool("shake", false);
+        spr.color = Color.white;
     }
 
     //====================SISTEMA DE TRIGGER PARA A MORTE======================
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) //  É PRECISO CALCULAR O LOG DE BASE 2 DO VALOR DA LAYER POR CONTA DA INTERPRETAÇÃO BINÁRIA DO LAYER MASK
     {
-        if (collision.gameObject.tag == "Morreu")
+        if (collision.gameObject.layer == Mathf.Log(enemieLayer.value, 2))
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<Player>().ReiniciarPosicao();
-            gameManager.PerderVidas(1);
+            KnockBack(collision.gameObject.transform);
+            gameManager.PerderVidas(false);
+        }
+
+        if (collision.gameObject.layer == Mathf.Log(instantDethLayer.value, 2))
+        {
+            gameManager.PerderVidas(true);
         }
     }
 }
