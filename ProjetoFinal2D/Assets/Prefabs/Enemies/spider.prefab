@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 9072184283177353577}
   m_Layer: 10
   m_Name: spider
-  m_TagString: Untagged
+  m_TagString: Morreu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
