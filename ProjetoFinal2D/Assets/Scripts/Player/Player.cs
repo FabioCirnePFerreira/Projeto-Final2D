@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
-
 public class Player : MonoBehaviour
 {
     //Pública: é acessivel no inspector;
     //Privada não é encontrada em nenhum outro lugar;
     public Vector2 posicaoInicial;
     private GameManager gameManager;
+    [SerializeField] Transform camFollow;
 
     [Header("Move System")]
     private Animator anim;
     private Rigidbody2D rigd;
+    [SerializeField] private AudioSource walkSound;
 
     public float speed;
     private float currentSpeed;
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private float gravityDegrees;
+    [SerializeField] AudioSource jumpSound;
+    [SerializeField] AudioSource landSound;
 
     private float gravity;
 
@@ -52,13 +56,19 @@ public class Player : MonoBehaviour
     private bool attacking;
 
     [Header("Damage System")]
-    [SerializeField] private LayerMask instantDethLayer;
     [SerializeField] private float knockBack = 5;
     [SerializeField] private float knockBackTime = 0.5f;
     [SerializeField] private Color damageColorSprite;
     [SerializeField] private Animator camAnim;
     private SpriteRenderer spr;
     private bool onKnockBack;
+
+    [Header("HookSystem")]
+    [SerializeField] private float hookRadius;
+    [SerializeField] private float hookGravity;
+    [SerializeField] private float hookSpeed;
+    private bool isOnHook;
+    private Transform hookTransform;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -75,12 +85,15 @@ public class Player : MonoBehaviour
         parrotTransformTarget = parrotTarget;
 
         parrotAnim = parrotTransform.GetComponent<Animator>();
+
+
+        gameManager.player = gameObject.GetComponent<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!attacking)
+        if (!attacking && !gameManager.onDialogue && !isOnHook)
         {
             Move();
             Jump();
@@ -88,6 +101,8 @@ public class Player : MonoBehaviour
         Push();
         FollowParrot();
         Attack();
+
+        if (isOnHook) OnHook();
     }
 
     //====================================REINICIA POSIÇÃO==========================================
@@ -106,16 +121,19 @@ public class Player : MonoBehaviour
 
         if (teclas > 0)
         {
+            walkSound.Play();
             transform.eulerAngles = new Vector2(0, 0);
             if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas < 0)
         {
+            walkSound.Play();
             transform.eulerAngles = new Vector2(0, 180);
             if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas == 0 && isground)
         {
+            walkSound.Stop();
             if(pushRB == null) anim.SetInteger("transition", 0);
         }
     }
@@ -131,6 +149,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isground)
         {
             rigd.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            jumpSound.Play();
         }
 
         anim.SetFloat("velocitY", v.y);
@@ -154,10 +173,10 @@ public class Player : MonoBehaviour
 
     }
 
+    //===================================SISTEMA DE EMPURRAR================================
     Rigidbody2D pushRB = null;
     BoxCollider2D pushCollider = null;
-
-    //===================================SISTEMA DE EMPURRAR================================
+    AudioSource pushAudio = null;
     void Push() 
     {
         RaycastHit2D ispushing = Physics2D.Raycast(pushCheck.position, transform.right, pushDistance, pushLayer);
@@ -166,22 +185,31 @@ public class Player : MonoBehaviour
         {
             pushRB = ispushing.rigidbody;
             pushCollider = pushRB.GetComponent<BoxCollider2D>();
-            if (pushRB.linearVelocity.y == 0 && !pushCollider.isTrigger ) // empurrando algo
+            pushAudio = pushRB.GetComponent<AudioSource>();
+            if (pushRB.linearVelocity.y == 0 && !pushCollider.isTrigger  && rigd.linearVelocity.x !=0) // empurrando algo
             {
                 pushRB.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
                 pushRB.linearVelocity = new Vector2(rigd.linearVelocity.x, pushRB.linearVelocityY);
                 currentSpeed = speed * pushVelocity;
                 parrotTransformTarget = pushRB.transform;
                 anim.SetInteger("transition", 4);
+                camAnim.SetBool("shake", true);
+
+                if (!pushAudio.isPlaying)
+                {
+                    pushAudio.Play();
+                }
             }
         }
         if (pushRB  != null && !ispushing) 
         {
+            camAnim.SetBool("shake", false);
             pushRB.constraints |= RigidbodyConstraints2D.FreezePositionX;
             pushRB.linearVelocity = Vector2.zero;
             pushRB = null;
             currentSpeed = speed;
             parrotTransformTarget = parrotTarget;
+            pushAudio.Stop();
         }
     }
 
@@ -197,6 +225,14 @@ public class Player : MonoBehaviour
         if(parrotTransform.position.x < parrotTransformTarget.position.x && distance > parrotMinDistance) parrotTransform.eulerAngles = Vector3.zero;
 
         parrotAnim.SetBool("Fly", !(distance < parrotMinDistance));
+    }
+
+    GameObject advice;
+    public void ResetParrot()
+    {
+        parrotTransformTarget = parrotTarget;
+        camAnim.GetComponent<CinemachineCamera>().Target.TrackingTarget = camFollow;
+        Destroy(advice);
     }
 
     //=========================SISTEMA DE ATAQUE==============================
@@ -237,18 +273,58 @@ public class Player : MonoBehaviour
         spr.color = Color.white;
     }
 
+    //=========================SISTEMA DE GANCHOS==============================
+
+    void OnHook() 
+    {
+        rigd.gravityScale = 0;
+
+        Vector3 vertice = (hookTransform.position + Vector3.down * radiusAttack);
+        Vector3 verticeDir = vertice - transform.position;
+        Vector2 movement = verticeDir * hookGravity;
+
+        rigd.linearVelocity += movement;
+
+
+        Vector3 dir = (transform.position - hookTransform.position).normalized;
+        transform.position = hookTransform.position + dir * hookRadius;
+    }
+
     //====================SISTEMA DE TRIGGER PARA A MORTE======================
     private void OnTriggerEnter2D(Collider2D collision) //  É PRECISO CALCULAR O LOG DE BASE 2 DO VALOR DA LAYER POR CONTA DA INTERPRETAÇÃO BINÁRIA DO LAYER MASK
     {
-        if (collision.gameObject.layer == Mathf.Log(enemieLayer.value, 2))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             KnockBack(collision.gameObject.transform);
             gameManager.PerderVidas(false);
         }
 
-        if (collision.gameObject.layer == Mathf.Log(instantDethLayer.value, 2))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("instantDeth"))
         {
             gameManager.PerderVidas(true);
+        }
+
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Advice"))
+        {
+            walkSound.Stop();
+            advice = collision.gameObject;
+            gameManager.onDialogue = true;
+            parrotTransformTarget = collision.transform;
+            DialogueText dialogue = collision.GetComponent<DialogueText>();
+            gameManager.dialogue.StartDialogue(dialogue.dialogue, dialogue.falas, dialogue.name_);
+            anim.SetInteger("transition", 0);
+            rigd.linearVelocity = Vector2.zero;
+            camAnim.GetComponent<CinemachineCamera>().Target.TrackingTarget = parrotTransform;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == 14 && Input.GetKeyDown(KeyCode.C))
+        {
+            isOnHook = true;
+            hookTransform = collision.gameObject.transform;
+            rigd.linearVelocity = Vector2.zero;
         }
     }
 }
