@@ -285,7 +285,6 @@ public class Player : MonoBehaviour
 
         rigd.linearVelocity += movement;
 
-
         Vector3 dir = (transform.position - hookTransform.position).normalized;
         transform.position = hookTransform.position + dir * hookRadius;
     }
