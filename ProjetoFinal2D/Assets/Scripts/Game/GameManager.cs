@@ -2,11 +2,13 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.Playables;
 
 public class GameManager : MonoBehaviour
 {
     //GameManager desorganizado, resolver se der tempo :(
 
+    [SerializeField] private GameObject hud;
     [HideInInspector] public Player player;
     public static GameManager instance;
     public int pontos = 0;
@@ -23,6 +25,10 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public bool onDialogue;
     public Dialogue dialogue;
+
+    [SerializeField] GameObject transitionDeth;
+    [SerializeField] Animator doorAnim;
+    [SerializeField] private PlayableDirector openDoorCutSceane;
     private void Awake()
     {
         instance = this;
@@ -38,19 +44,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void PerderVidas(bool instant)
+    public void PerderVidas(bool instant, SpriteRenderer playerSPR)
     {
-        if (!shield || instant)
+        if (!deth)
         {
-            if ((hit || instant) && !imortal)
+            if (!shield || instant)
             {
-                deth = true;
-                Transition("Menu");
+                if ((hit || instant) && !imortal)
+                {
+                    deth = true;
+                    PlayerDead(playerSPR);
+                }
+                hit = true;
+                hudAnim.SetBool("hit", hit);
             }
-            hit = true;
-            hudAnim.SetBool("hit", hit);
+            else LoseShield();
         }
-        else LoseShield();
     }
     public void GainShield()
     {
@@ -97,9 +106,10 @@ public class GameManager : MonoBehaviour
                 //Debug.Log(buttons.Length);
             }
         }
-        if (x >= buttons.Length)
+        if (x >= buttons.Length && !doorAnim.GetBool("open"))
         {
-            Debug.Log("Ganhou");
+            doorAnim.SetBool("open", true);
+            openDoorCutSceane.Play();
         }
     }
 
@@ -112,5 +122,22 @@ public class GameManager : MonoBehaviour
     {
         menu.SetActive(false);
         Time.timeScale = 1;
+    }
+
+    public void PlayerDead(SpriteRenderer playeSpr)
+    {
+        hud.SetActive(false);
+        playeSpr.sortingOrder = 20;
+        StartCoroutine(PlayerDeadCoroutine());
+    }
+
+    IEnumerator PlayerDeadCoroutine()
+    {
+        Time.timeScale = 0.3f;
+        transitionDeth.SetActive(true);
+        yield return new WaitForSeconds(1);
+        Time.timeScale = 1;
+        Transition("Menu");
+        yield return null;
     }
 }

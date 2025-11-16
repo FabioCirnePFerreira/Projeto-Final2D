@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform camFollow;
 
     [Header("Move System")]
+    private bool blockMove;
     private Animator anim;
     private Rigidbody2D rigd;
     [SerializeField] private AudioSource walkSound;
@@ -60,6 +61,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float knockBackTime = 0.5f;
     [SerializeField] private Color damageColorSprite;
     [SerializeField] private Animator camAnim;
+    [SerializeField] private AudioSource dethSound;
+    [SerializeField] private AudioSource levelSound;
     private SpriteRenderer spr;
     private bool onKnockBack;
 
@@ -67,6 +70,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float hookRadius;
     [SerializeField] private float hookGravity;
     [SerializeField] private float hookSpeed;
+    [SerializeField] private float hookForceImpulse;
+    [SerializeField] private float maxHigh;
     private bool isOnHook;
     private Transform hookTransform;
 
@@ -93,16 +98,28 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!attacking && !gameManager.onDialogue && !isOnHook)
+        isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        if (!gameManager.deth)
         {
-            Move();
-            Jump();
-        }
-        Push();
-        FollowParrot();
-        Attack();
+            if (!attacking && !gameManager.onDialogue && !isOnHook && !blockMove)
+            {
+                Move();
+                Jump();
+            }
+            Push();
+            FollowParrot();
+            Attack();
 
-        if (isOnHook) OnHook();
+            if (isOnHook) OnHook();
+        }
+        if(gameManager.deth && !dethSound.isPlaying)
+        {
+            anim.SetInteger("transition", 5);
+            walkSound.Stop();
+            dethSound.Play();
+            rigd.linearVelocity = Vector2.zero;
+            levelSound.Stop();
+        }
     }
 
     //====================================REINICIA POSIÇÃO==========================================
@@ -121,27 +138,30 @@ public class Player : MonoBehaviour
 
         if (teclas > 0)
         {
-            walkSound.Play();
+            if(!walkSound.isPlaying) walkSound.Play();
             transform.eulerAngles = new Vector2(0, 0);
             if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas < 0)
         {
-            walkSound.Play();
+            if(!walkSound.isPlaying) walkSound.Play();
             transform.eulerAngles = new Vector2(0, 180);
             if (isground && pushRB == null) anim.SetInteger("transition", 1);
         }
         if (teclas == 0 && isground)
         {
-            walkSound.Stop();
             if(pushRB == null) anim.SetInteger("transition", 0);
+        }
+
+        if(teclas ==0 || !isground)
+        {
+            walkSound.Stop();
         }
     }
 
     //=======================================SISTEMA DE PULO=======================================
     void Jump()
     {
-        isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
         //Debug.Log(isground);
         Debug.DrawLine(groundCheck.transform.position, groundCheck.transform.position + Vector3.down * groundCheckDistance);
 
@@ -275,18 +295,84 @@ public class Player : MonoBehaviour
 
     //=========================SISTEMA DE GANCHOS==============================
 
+    float targetHigh;
+    float initicalSide;
     void OnHook() 
     {
+        anim.SetInteger("transition", 6);
         rigd.gravityScale = 0;
+        Vector3 player = transform.position;
+        Vector3 hook = hookTransform.position;
+        Vector3 vertice = (hook + Vector3.down * radiusAttack);
+        Vector3 verticeDir = vertice - player;
+        float high = hook.y - player.y;
+        float actualSide = player.x - hook.x;
 
-        Vector3 vertice = (hookTransform.position + Vector3.down * radiusAttack);
-        Vector3 verticeDir = vertice - transform.position;
-        Vector2 movement = verticeDir * hookGravity;
+        if(rigd.linearVelocity == Vector2.zero)
+        {
+            targetHigh = high + hookGravity;
+            initicalSide = actualSide;
+        }
 
-        rigd.linearVelocity += movement;
+        if(initicalSide > 0)
+        {
+            transform.localEulerAngles = new Vector3(0, 180);
+
+            anim.SetFloat("swing", -actualSide/initicalSide);
+
+            rigd.AddForce(Vector2.left * hookSpeed);
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                rigd.AddForce(Vector2.left * hookForceImpulse, ForceMode2D.Impulse);
+                targetHigh -= hookSpeed;
+            }
+            if (high <= targetHigh && initicalSide / actualSide < 0)
+            {
+                rigd.linearVelocity = Vector2.zero;
+            }
+        }
+        if(initicalSide < 0)
+        {
+            transform.localEulerAngles = new Vector3(0, 0);
+
+            anim.SetFloat("swing", -actualSide / initicalSide);
+
+            rigd.AddForce(Vector2.right * hookSpeed);
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                rigd.AddForce(Vector2.right * hookForceImpulse, ForceMode2D.Impulse);
+                targetHigh -=hookSpeed;
+            }
+            if (high <= targetHigh && initicalSide / actualSide < 0)
+            {
+                rigd.linearVelocity = Vector2.zero;
+            }
+        }
+
+        if (targetHigh < maxHigh) targetHigh = maxHigh;
+
 
         Vector3 dir = (transform.position - hookTransform.position).normalized;
         transform.position = hookTransform.position + dir * hookRadius;
+
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetInteger("transition", 0);
+            rigd.gravityScale = 1;
+            rigd.AddForce(rigd.linearVelocity + Vector2.up*rigd.linearVelocity.x);
+            isOnHook = false;
+            StartCoroutine(WaitToGround());
+            blockMove = true;
+        }
+    }
+
+    IEnumerator WaitToGround()
+    {
+        yield return new WaitUntil(() => isground);
+        blockMove = false;
     }
 
     //====================SISTEMA DE TRIGGER PARA A MORTE======================
@@ -295,12 +381,12 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             KnockBack(collision.gameObject.transform);
-            gameManager.PerderVidas(false);
+            gameManager.PerderVidas(false, spr);
         }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("instantDeth"))
         {
-            gameManager.PerderVidas(true);
+            gameManager.PerderVidas(true, spr);
         }
 
         if(collision.gameObject.layer == LayerMask.NameToLayer("Advice"))
@@ -324,6 +410,7 @@ public class Player : MonoBehaviour
             isOnHook = true;
             hookTransform = collision.gameObject.transform;
             rigd.linearVelocity = Vector2.zero;
+            walkSound.Stop();
         }
     }
 }
