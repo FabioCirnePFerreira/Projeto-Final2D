@@ -323,7 +323,7 @@ MonoBehaviour:
   levelSound: {fileID: 436037846765652733}
   hookRadius: 3
   hookGravity: 0.5
-  hookSpeed: 10
+  hookSpeed: 5
   hookForceImpulse: 2
   maxHigh: 1.5
 --- !u!50 &7803412656891496277
