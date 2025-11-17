@@ -309,6 +309,7 @@ MonoBehaviour:
   parrotMinDistance: 0.5
   parrotSpeed: 3
   parrotTarget: {fileID: 3691758740809660517}
+  bloodEffect: {fileID: 8096912394588113666, guid: 85f699e3bec958440ba36b9cfc7b50e0, type: 3}
   radiusAttack: 3
   attackOrigin: {fileID: 1437955834348674766}
   enemieLayer:

@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 public class Player : MonoBehaviour
 {
     //Pública: é acessivel no inspector;
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
     private Animator parrotAnim;
 
     [Header("Attack System")]
+    [SerializeField] private GameObject bloodEffect;
     [SerializeField] private float radiusAttack;
     [SerializeField] private Transform attackOrigin;
     [SerializeField] private LayerMask enemieLayer;
@@ -96,7 +98,7 @@ public class Player : MonoBehaviour
         gameManager.player = gameObject.GetComponent<Player>();
     }
 
-    // Update is called once per frame
+    Collider2D col = null;
     void Update()
     {
         isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
@@ -129,6 +131,11 @@ public class Player : MonoBehaviour
         {
             levelSound.Stop();
             gameManager.CutsceaneFinal();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            gameManager.ResetRocks();
         }
     }
 
@@ -280,7 +287,11 @@ public class Player : MonoBehaviour
     IEnumerator AttackCoroutine(float duration,Collider2D obj)
     {
         yield return new WaitForSeconds(duration);
-        if(obj) Destroy(obj.gameObject);
+        if (obj)
+        {
+            Instantiate(bloodEffect, obj.transform.position, Quaternion.identity);
+            Destroy(obj.gameObject);
+        }
         attacking = false;
     }
 
@@ -421,6 +432,11 @@ public class Player : MonoBehaviour
             hookTransform = collision.gameObject.transform;
             rigd.linearVelocity = Vector2.zero;
             walkSound.Stop();
+        }
+
+        if(collision.gameObject.layer == 16)
+        {
+            collision.GetComponent<PlayableDirector>().Play();
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class Menu : MonoBehaviour
 {
     [SerializeField] Animator transition_;
-    public void StartGame(string scene) 
+    public void NextSceane(string scene) 
     {
         StartCoroutine(Game(transition_, scene));
     }

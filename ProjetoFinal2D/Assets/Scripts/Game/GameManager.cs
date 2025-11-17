@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using UnityEngine.Playables;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool shield;
     [HideInInspector] public int pressedButtonsCount;
     [SerializeField] private Botao[] buttons;
+    [SerializeField] private GameObject[] pedras;
+    private List<Vector3> pedrasInitalPos = new List<Vector3>();
     [SerializeField] private Animator hudAnim;
 
     [SerializeField] bool imortal;
@@ -30,9 +33,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] Animator doorAnim;
     [SerializeField] private PlayableDirector openDoorCutSceane;
     [SerializeField] private PlayableDirector cutssceanFinal;
+
     private void Awake()
     {
         instance = this;
+
+        foreach(GameObject pedra in pedras)
+        {
+            pedrasInitalPos.Add(pedra.transform.position);
+        }
     }
 
     public void Addpontos(int qtd)     //Pontos
@@ -83,6 +92,26 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(scene);
         yield return null;
+    }
+
+    public void ResetRocks()
+    {
+        List<GameObject> lockedRocks = new List<GameObject>();
+        foreach(Botao btn in buttons)
+        {
+            if (btn.pedra != null)
+            {
+                lockedRocks.Add(btn.pedra);
+            }
+        }
+
+        int x = 0;
+        foreach (GameObject pedra in pedras)
+        {
+            if (!lockedRocks.Contains(pedra)) pedra.transform.position = pedrasInitalPos[x];
+            x++;
+        }
+
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -138,7 +167,7 @@ public class GameManager : MonoBehaviour
         transitionDeth.SetActive(true);
         yield return new WaitForSeconds(1);
         Time.timeScale = 1;
-        Transition("Menu");
+        Transition("DethSceane");
         yield return null;
     }
 
