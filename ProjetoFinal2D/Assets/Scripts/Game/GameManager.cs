@@ -84,6 +84,11 @@ public class GameManager : MonoBehaviour
 
     public void Transition(string scene)
     {
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
+
         StartCoroutine(TransitionCoroutine(scene));
     }
     IEnumerator TransitionCoroutine(string scene)

@@ -26,7 +26,7 @@ public class Paralax : MonoBehaviour
 
         foreach (ParalaxLayer layer in layers)
         {
-            layer.paralaxTransform.position -= Vector3.right*movement.x * layer.paralaxForce;
+            layer.paralaxTransform.position -= Vector3.right * movement.x * layer.paralaxForce;
         }
 
         lastPositionTarget = target.position;

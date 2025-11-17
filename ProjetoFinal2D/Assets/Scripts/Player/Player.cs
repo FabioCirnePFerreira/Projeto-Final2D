@@ -98,7 +98,6 @@ public class Player : MonoBehaviour
         gameManager.player = gameObject.GetComponent<Player>();
     }
 
-    Collider2D col = null;
     void Update()
     {
         isground = Physics2D.Raycast(groundCheck.transform.position, Vector2.down, groundCheckDistance, groundLayer);
