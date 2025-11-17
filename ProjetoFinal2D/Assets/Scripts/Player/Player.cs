@@ -75,6 +75,8 @@ public class Player : MonoBehaviour
     private bool isOnHook;
     private Transform hookTransform;
 
+    [SerializeField] LayerMask doorLayer;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -119,6 +121,15 @@ public class Player : MonoBehaviour
             dethSound.Play();
             rigd.linearVelocity = Vector2.zero;
             levelSound.Stop();
+        }
+
+
+        RaycastHit2D interactDoor = Physics2D.CircleCast(transform.position, 5, Vector2.zero, 0, doorLayer);
+
+        if(interactDoor && interactDoor.collider.GetComponent<Animator>().GetBool("open") && Input.GetKeyDown(KeyCode.E))
+        {
+            levelSound.Stop();
+            gameManager.CutsceaneFinal();
         }
     }
 
@@ -209,7 +220,7 @@ public class Player : MonoBehaviour
             if (pushRB.linearVelocity.y == 0 && !pushCollider.isTrigger  && rigd.linearVelocity.x !=0) // empurrando algo
             {
                 pushRB.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
-                pushRB.linearVelocity = new Vector2(rigd.linearVelocity.x, pushRB.linearVelocityY);
+                pushRB.linearVelocity = new Vector2(rigd.linearVelocity.x, pushRB.linearVelocity.y);
                 currentSpeed = speed * pushVelocity;
                 parrotTransformTarget = pushRB.transform;
                 anim.SetInteger("transition", 4);

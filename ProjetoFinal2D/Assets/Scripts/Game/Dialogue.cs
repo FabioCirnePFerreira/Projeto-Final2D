@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Rendering.PostProcessing;
 using UnityEngine;
 
 public class Dialogue : MonoBehaviour

@@ -16,4 +16,9 @@ public class Menu : MonoBehaviour
         transition_.SetBool("go", false);
         SceneManager.LoadScene(scene);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

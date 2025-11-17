@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject transitionDeth;
     [SerializeField] Animator doorAnim;
     [SerializeField] private PlayableDirector openDoorCutSceane;
+    [SerializeField] private PlayableDirector cutssceanFinal;
     private void Awake()
     {
         instance = this;
@@ -139,5 +140,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Transition("Menu");
         yield return null;
+    }
+
+
+    public void CutsceaneFinal()
+    {
+        cutssceanFinal.Play();
+        StartCoroutine(final());
+    }
+
+    IEnumerator final()
+    {
+        yield return new WaitForSeconds(25);
+        Transition("Menu");
     }
 }
