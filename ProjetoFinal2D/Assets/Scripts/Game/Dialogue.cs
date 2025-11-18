@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Dialogue : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Dialogue : MonoBehaviour
     [HideInInspector] public bool onDialogue;
     [SerializeField] GameObject dialogueBox;
     [SerializeField] AudioSource fala;
+    [SerializeField] Image personagem;
 
     Coroutine writingCoroutine;
     bool isTyping;
@@ -19,19 +21,23 @@ public class Dialogue : MonoBehaviour
     {
         dialogueText.text = null;
     }
-    public void StartDialogue(string[] dialogue, AudioClip[] falas, string name)
+    public void StartDialogue(string[] dialogue, AudioClip[] falas, string name, bool mudo)
     {
-        StartCoroutine(Dialogue_(dialogue, falas, name));
+        personagem.gameObject.SetActive(!mudo);
+        StartCoroutine(Dialogue_(dialogue, falas, name, mudo));
         dialogueBox.SetActive(true);
     }
 
-    IEnumerator Dialogue_(string[] dialogue, AudioClip[]falas, string name) 
+    IEnumerator Dialogue_(string[] dialogue, AudioClip[]falas, string name, bool mudo) 
     {
         nameText.text = name;
         foreach (string text in dialogue)
         {
-            fala.clip = falas[Random.Range(0, falas.Length)];
-            fala.Play();
+            if (!mudo)
+            {
+                fala.clip = falas[Random.Range(0, falas.Length)];
+                fala.Play();
+            }
             yield return null;
 
             dialogueText.text = null;

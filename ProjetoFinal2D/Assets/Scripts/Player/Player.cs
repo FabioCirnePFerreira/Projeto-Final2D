@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public Vector2 posicaoInicial;
     private GameManager gameManager;
     [SerializeField] Transform camFollow;
+    [SerializeField] LayerMask estatua;
+
 
     [Header("Move System")]
     private bool blockMove;
@@ -135,6 +137,20 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             gameManager.ResetRocks();
+
+        }
+
+
+        RaycastHit2D estatuaRay = Physics2D.CircleCast(transform.position, 2, Vector2.zero, 0, estatua);
+        if(estatuaRay && Input.GetKeyDown(KeyCode.E) && !gameManager.onDialogue)
+        {
+            walkSound.Stop();
+            DialogueText dialogue = estatuaRay.transform.gameObject.GetComponent<DialogueText>();
+            gameManager.dialogue.StartDialogue(dialogue.dialogue, dialogue.falas, dialogue.name_, true);
+            anim.SetInteger("transition", 0);
+            rigd.linearVelocity = Vector2.zero;
+            gameManager.onDialogue = true;
+
         }
     }
 
@@ -416,7 +432,7 @@ public class Player : MonoBehaviour
             gameManager.onDialogue = true;
             parrotTransformTarget = collision.transform;
             DialogueText dialogue = collision.GetComponent<DialogueText>();
-            gameManager.dialogue.StartDialogue(dialogue.dialogue, dialogue.falas, dialogue.name_);
+            gameManager.dialogue.StartDialogue(dialogue.dialogue, dialogue.falas, dialogue.name_, false);
             anim.SetInteger("transition", 0);
             rigd.linearVelocity = Vector2.zero;
             camAnim.GetComponent<CinemachineCamera>().Target.TrackingTarget = parrotTransform;

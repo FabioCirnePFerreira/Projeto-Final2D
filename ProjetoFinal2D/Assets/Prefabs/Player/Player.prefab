@@ -287,6 +287,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   posicaoInicial: {x: 0, y: 0}
   camFollow: {fileID: 2826428239505484869}
+  estatua:
+    serializedVersion: 2
+    m_Bits: 262144
   walkSound: {fileID: 4606848951984600473}
   speed: 5
   jumpForce: 6
