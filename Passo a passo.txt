@@ -1,0 +1,7 @@
+Passo a passo para a execução do projeto na build:
+
+1º Passo- Baixe os arquivos do repositório;
+
+2º Passo- Abra a pasta chamada "Build";
+
+3º Passo- Abra o arquivo .exe: "ProjetoFinal2D";

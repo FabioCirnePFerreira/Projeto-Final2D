@@ -1,0 +1,40 @@
+Explicação dos pontos cruciais do script do projeto:
+
+======================================================================================================
+Sistema de movimento do player:
+
+movimento Horizontal:
+controla o player a partir do Rigbody2D
+muda a animação do personagem conforme o movimento
+
+movimento Vertical:
+verifica se o player esta no chão com a variável isGround, que recebe um array apontado para baixo
+caso esteja no chão aplica uma força vertical no Rigbody2D do player
+
+======================================================================================================
+Sistema de empurrar pedras do player:
+
+aplica a força horizontal do player na pedra
+o transform da pedra é pego a partir de um array lançado a frente do player
+
+======================================================================================================
+Sistema de ataque do player:
+
+ativa um colisor do tipo Physic2D.BoxCast na frente do player durante o tempo do ataque
+caso o inimigo colida com o colisor, ele executa a lógica de morte
+
+======================================================================================================
+Sistema de morte do player:
+
+caso o player encoste na layer do inimigo, ele executa um método da classe GameManeger, que gerencia a quantidade de vidas
+se a vida chegar a zero, o player executa a lógica de morte: ativa a transição e troca a cena para a DethSceane
+======================================================================================================
+Game Maneger:
+
+gerencia funções como a transição de cenas, os diálogos dos personagem e etc...
+======================================================================================================
+Diálogos:
+
+gerenciado também pela classe Dialogue, ela recebe textos, áudios com falas e o nome do player
+o script aplica a lógica gerenciada por dois Ienumerator, que controlam o seguimento das interações
+o efeito de texto sendo escrevendo também é aplicado por um Ienumerator
